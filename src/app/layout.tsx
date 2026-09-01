@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Archivo, IBM_Plex_Mono, Inter } from "next/font/google";
+import { Providers } from "@/components/providers";
 import { Nav } from "@/components/Nav";
 import { Footer } from "@/components/Footer";
 import { SITE } from "@/lib/site";
@@ -48,9 +49,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en" className={`${display.variable} ${sans.variable} ${mono.variable}`}>
       <body>
-        <Nav />
-        <main>{children}</main>
-        <Footer />
+        <Providers>
+          <Nav />
+          <main>{children}</main>
+          <Footer />
+        </Providers>
       </body>
     </html>
   );
