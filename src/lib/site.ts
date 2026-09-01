@@ -1,18 +1,18 @@
 /*
  * The rename point. Everything the brand touches — wordmark, title tags,
- * footer, social — reads from here, so swapping DUO for Duetto, Encore or
- * Counterpoint is one edit rather than a search across twenty files.
+ * footer, social — reads from here, so swapping DUETTO for another name is
+ * one edit rather than a search across twenty files.
  */
 export const SITE = {
-  name: "DUO",
-  wordmark: "Duo",
-  domain: "duo.fun",
-  handle: "@duodotfun",
-  social: "https://x.com/duodotfun",
+  name: "DUETTO",
+  wordmark: "Duetto",
+  domain: "duetto.fun",
+  handle: "@duettodotfun",
+  social: "https://x.com/duettodotfun",
   tagline: "A coin somebody opened in your name, earning while you were out.",
-  /* The unit of the product. Used as a noun all over the copy: "open a duo". */
-  unit: "duo",
-  unitPlural: "duos",
+  /* The unit of the product. Used as a noun all over the copy: "open a duetto". */
+  unit: "duetto",
+  unitPlural: "duettos",
 } as const;
 
 export const CHAIN = {
