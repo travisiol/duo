@@ -59,7 +59,7 @@ function MiniSite() {
               strokeDasharray="2.2 2.4"
             />
           </svg>
-          Duo
+          Duetto
         </div>
         <div className="da-links">
           <b>The board</b>
@@ -79,7 +79,7 @@ function MiniSite() {
       </p>
 
       <div className="da-btns">
-        <button className="da-btn">Open a duo</button>
+        <button className="da-btn">Open a duetto</button>
         <button className="da-btn ghost">Someone opened mine</button>
       </div>
 
