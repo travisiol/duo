@@ -1,0 +1,246 @@
+/*
+ * Art-direction bake-off. Every panel renders identical markup; only the
+ * tokens on the wrapper change. Nothing here is imported by the real site —
+ * once a direction wins, its block gets promoted into globals.css and this
+ * route is deleted.
+ */
+
+.da {
+  --radius: 0px;
+  --bw: 1px;
+  --shadow: none;
+  --pad: 1.5rem;
+}
+
+/* 1 — RISO PRINT. Fanzine on cheap paper: two spot inks that never blend,
+   hard offset shadows, no radius, ink-black keylines. */
+.da[data-da="riso"] {
+  --bg: #f2efe4;
+  --surface: #fffdf6;
+  --text: #141210;
+  --muted: #6b6459;
+  --accent: #e8402a;
+  --accent-2: #2438c4;
+  --on-accent: #fffdf6;
+  --line: #141210;
+  --bw: 2px;
+  --radius: 0px;
+  --shadow: 5px 5px 0 var(--line);
+  --font-d: var(--font-archivo);
+  --font-b: var(--font-inter);
+}
+
+/* 2 — CANDY POP. Same loudness as the original but sweet instead of acid:
+   warm paper, chunky radius, violet and pink doing the shouting. */
+.da[data-da="pop"] {
+  --bg: #fdfbf4;
+  --surface: #ffffff;
+  --text: #14121a;
+  --muted: #726c7e;
+  --accent: #6b4eff;
+  --accent-2: #ff4d8d;
+  --on-accent: #ffffff;
+  --line: #14121a;
+  --bw: 1.5px;
+  --radius: 18px;
+  --shadow: 5px 5px 0 var(--line);
+  --font-d: var(--font-archivo);
+  --font-b: var(--font-inter);
+}
+
+/* 3 — CHROME. Dark, glassy, iridescent — the register crypto actually
+   dresses in. Light comes from behind the surfaces, not from ink. */
+.da[data-da="chrome"] {
+  --bg: #0a0c12;
+  --surface: linear-gradient(160deg, #171b26 0%, #10131b 100%);
+  --text: #e6ebf5;
+  --muted: #7d8698;
+  --accent: #8fd0ff;
+  --accent-2: #c9a2ff;
+  --on-accent: #0a0c12;
+  --line: rgba(198, 214, 240, 0.14);
+  --bw: 1px;
+  --radius: 14px;
+  --shadow: 0 1px 0 rgba(255, 255, 255, 0.07) inset, 0 18px 40px -24px rgba(143, 208, 255, 0.5);
+  --font-d: var(--font-space);
+  --font-b: var(--font-inter);
+}
+
+/* 4 — TERMINAL. Everything is mono, everything is a row. Reads like a
+   trading desk that happens to be pointed at TikTok. */
+.da[data-da="terminal"] {
+  --bg: #07080a;
+  --surface: #0d0f12;
+  --text: #d8e0e6;
+  --muted: #6a757f;
+  --accent: #3ce0a8;
+  --accent-2: #e0673c;
+  --on-accent: #07080a;
+  --line: #1e242a;
+  --bw: 1px;
+  --radius: 0px;
+  --shadow: none;
+  --font-d: var(--font-plex-mono);
+  --font-b: var(--font-plex-mono);
+}
+
+/* --- shared skeleton, tokens do all the talking --------------------------- */
+
+.da {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-b);
+  padding: 1.75rem;
+  border-radius: var(--radius);
+  container-type: inline-size;
+}
+
+.da-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding-bottom: 1.25rem;
+  border-bottom: var(--bw) solid var(--line);
+}
+
+.da-mark {
+  font-family: var(--font-d);
+  font-size: 1.25rem;
+  letter-spacing: -0.02em;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.da-links {
+  display: flex;
+  gap: 1rem;
+  font-size: 0.75rem;
+  color: var(--muted);
+}
+.da-links b {
+  color: var(--accent);
+  font-weight: 500;
+}
+
+.da-h1 {
+  font-family: var(--font-d);
+  font-size: clamp(1.9rem, 5cqi, 3rem);
+  line-height: 1.02;
+  letter-spacing: -0.03em;
+  margin: 1.75rem 0 0.9rem;
+}
+.da-h1 em {
+  font-style: normal;
+  color: var(--accent);
+}
+
+.da-sub {
+  font-size: 0.875rem;
+  line-height: 1.6;
+  color: var(--muted);
+  max-width: 34ch;
+}
+
+.da-btns {
+  display: flex;
+  gap: 0.65rem;
+  margin-top: 1.4rem;
+  flex-wrap: wrap;
+}
+
+.da-btn {
+  font-family: var(--font-b);
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  padding: 0.7rem 1.15rem;
+  border-radius: calc(var(--radius) * 0.6);
+  border: var(--bw) solid var(--line);
+  background: var(--accent);
+  color: var(--on-accent);
+  box-shadow: var(--shadow);
+}
+.da-btn.ghost {
+  background: transparent;
+  color: var(--text);
+  box-shadow: none;
+}
+
+/* the coin row */
+.da-card {
+  margin-top: 1.75rem;
+  background: var(--surface);
+  border: var(--bw) solid var(--line);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: var(--pad);
+}
+
+.da-card-top {
+  display: flex;
+  align-items: baseline;
+  gap: 0.6rem;
+}
+.da-ticker {
+  font-family: var(--font-d);
+  font-size: 1.4rem;
+  letter-spacing: -0.02em;
+}
+.da-name {
+  font-size: 0.8rem;
+  color: var(--muted);
+}
+
+.da-stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.75rem;
+  margin-top: 1.1rem;
+  padding-top: 1.1rem;
+  border-top: var(--bw) solid var(--line);
+}
+.da-stat span {
+  display: block;
+  font-size: 0.5625rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 0.3rem;
+}
+.da-stat b {
+  font-family: var(--font-plex-mono);
+  font-size: 0.8125rem;
+  font-weight: 500;
+}
+
+/* the half that is owed — the one element allowed to carry the accent */
+.da-owed {
+  margin-top: 1.1rem;
+  padding: 0.9rem 1rem;
+  border: var(--bw) dashed var(--accent);
+  border-radius: calc(var(--radius) * 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+.da-owed small {
+  display: block;
+  font-size: 0.5625rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 0.25rem;
+}
+.da-handle {
+  font-family: var(--font-plex-mono);
+  font-size: 0.8125rem;
+}
+.da-amount {
+  font-family: var(--font-plex-mono);
+  font-size: 1.05rem;
+  color: var(--accent);
+  text-align: right;
+}

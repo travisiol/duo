@@ -1,0 +1,166 @@
+@import "tailwindcss";
+
+/*
+ * DUO — a coin somebody opened in your name.
+ *
+ * Candy pop. Warm paper, ink keylines, chunky corners and hard offset
+ * shadows: the loudness of a launchpad without the acid. Violet does all the
+ * shouting and is spent on exactly one thing — money owed to a person who
+ * has not arrived yet. Pink is its echo, used sparingly for the second voice.
+ * On a board where every row is a coin, the accent has to mean "unclaimed"
+ * or it means nothing.
+ *
+ * Token names are deliberately role-based (page / surface / fg / accent /
+ * line) rather than descriptive. The art direction has already changed once;
+ * the next swap should be this file and nothing else.
+ */
+:root {
+  --page: #fdfbf4;
+  --surface: #ffffff;
+  --surface-2: #f5f2fd;
+
+  --fg: #14121a;
+  --fg-soft: #4a4557;
+  --fg-muted: #726c7e;
+
+  --accent: #6b4eff;
+  --accent-hi: #5133f2;
+  --accent-line: #6b4eff;
+  --accent-2: #ff4d8d;
+  --on-accent: #ffffff;
+
+  /* Two weights of edge. The soft one divides the inside of a card; the ink
+     one draws the card itself and carries the offset shadow. */
+  --line: rgba(20, 18, 26, 0.13);
+  --line-strong: #14121a;
+
+  --gain: #12915a;
+  --loss: #d93a45;
+
+  --radius: 18px;
+  --radius-sm: 11px;
+}
+
+@theme inline {
+  --color-page: var(--page);
+  --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
+  --color-fg: var(--fg);
+  --color-fg-soft: var(--fg-soft);
+  --color-fg-muted: var(--fg-muted);
+  --color-accent: var(--accent);
+  --color-accent-hi: var(--accent-hi);
+  --color-accent-line: var(--accent-line);
+  --color-accent-2: var(--accent-2);
+  --color-on-accent: var(--on-accent);
+  --color-line: var(--line);
+  --color-line-strong: var(--line-strong);
+  --color-gain: var(--gain);
+  --color-loss: var(--loss);
+
+  --font-display: var(--font-archivo), ui-sans-serif, system-ui, sans-serif;
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, -apple-system, sans-serif;
+  --font-mono: var(--font-plex-mono), ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+}
+
+html {
+  background: var(--page);
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--page);
+  color: var(--fg);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+/* Paper tooth. Light enough to feel like stock rather than a texture. */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0.35;
+  mix-blend-mode: multiply;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)' opacity='0.14'/%3E%3C/svg%3E");
+}
+
+body > * {
+  position: relative;
+  z-index: 1;
+}
+
+::selection {
+  background: var(--accent);
+  color: var(--on-accent);
+}
+
+/* --- Type roles -------------------------------------------------------- */
+
+.display {
+  font-family: var(--font-display);
+  font-weight: 800;
+  letter-spacing: -0.035em;
+  line-height: 0.96;
+}
+
+.eyebrow {
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--fg-muted);
+}
+
+.numeral {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.01em;
+}
+
+/* --- Structure --------------------------------------------------------- */
+
+.rule-t {
+  border-top: 1px solid var(--line);
+}
+
+/* The chunky unit. Ink keyline plus a hard offset — no blur anywhere on the
+   page, because a soft shadow would put this back in the app-template idiom
+   the whole direction is trying to leave. */
+.card {
+  background: var(--surface);
+  border: 2px solid var(--line-strong);
+  border-radius: var(--radius);
+  box-shadow: 5px 5px 0 var(--line-strong);
+}
+
+.card-quiet {
+  background: transparent;
+  border: 2px solid var(--line-strong);
+  border-radius: var(--radius);
+}
+
+/* A coin still waiting for its person. The only place violet is allowed to
+   fill rather than outline. */
+.owed {
+  border-color: var(--accent);
+  box-shadow: 5px 5px 0 var(--accent);
+}
+
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
