@@ -5,7 +5,7 @@ import { usePathname } from "next/navigation";
 import clsx from "clsx";
 import { NAV, SITE } from "@/lib/site";
 import { Wordmark } from "./Wordmark";
-import { Button } from "./ui/Button";
+import { WalletConnect } from "./WalletConnect";
 
 export function Nav() {
   const path = usePathname();
@@ -51,9 +51,7 @@ export function Nav() {
                 <path d="M18.9 2H22l-7.2 8.3L23.3 22h-6.6l-5.2-6.8L5.5 22H2.4l7.7-8.9L1.3 2H8l4.7 6.2L18.9 2Zm-1.1 18h1.7L7.3 3.7H5.5L17.8 20Z" />
               </svg>
             </a>
-            <Button variant="accent" size="sm">
-              Connect
-            </Button>
+            <WalletConnect />
           </div>
         </div>
 
