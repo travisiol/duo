@@ -1,11 +1,13 @@
 "use client";
 
 import { useState } from "react";
+import { useAccount } from "wagmi";
 import clsx from "clsx";
 import { CHAIN, FEES, SITE } from "@/lib/site";
 import { COINS } from "@/lib/coins";
 import { eth } from "@/lib/format";
 import { Button } from "./ui/Button";
+import { WalletConnect } from "./WalletConnect";
 import { Input } from "./ui/Field";
 
 type Found = { handle: string; waiting: number; coins: number } | null;
@@ -37,6 +39,9 @@ export function ClaimFlow() {
   const [searched, setSearched] = useState(false);
   const [route, setRoute] = useState<"bio" | "caption">("bio");
 
+  const { address, isConnected } = useAccount();
+  const ready = Boolean(found) && isConnected;
+
   /* Stands in for the chain read. The vault address is a pure function of the
      handle, so a lookup never needs a wallet or a login. */
   function look() {
@@ -56,7 +61,12 @@ export function ClaimFlow() {
     );
   }
 
-  const code = found ? `${SITE.name.toLowerCase()}-${found.handle.slice(0, 4)}-7f3a91` : "";
+  /* Derived from the handle and the wallet together — that pairing is the
+     whole point, so no address means no code. */
+  const code =
+    found && address
+      ? `${SITE.name.toLowerCase()}-${found.handle.slice(0, 4)}-${address.slice(2, 8).toLowerCase()}`
+      : "";
 
   return (
     <div className="space-y-5">
@@ -113,12 +123,16 @@ export function ClaimFlow() {
           Connect it and sign one sentence. Free, no transaction — it proves the address is yours as
           well as the account.
         </p>
-        <Button variant="outline" disabled={!found}>
-          Connect wallet
-        </Button>
+        {found ? (
+          <WalletConnect />
+        ) : (
+          <Button variant="outline" disabled>
+            Connect wallet
+          </Button>
+        )}
       </Step>
 
-      <Step n={3} title="Prove the account" dim={!found}>
+      <Step n={3} title="Prove the account" dim={!ready}>
         <p className="text-sm text-fg-soft leading-relaxed">
           Your code is derived from the handle <em className="not-italic text-fg">and</em> that
           wallet together. A code tied only to a handle could be copied out of your bio and replayed
@@ -127,11 +141,11 @@ export function ClaimFlow() {
 
         <div className="mt-5 flex items-center justify-between gap-4 border border-dashed border-line px-4 py-3.5">
           <span className="numeral text-sm text-accent break-all">
-            {code || "connect to generate"}
+            {code || "connect a wallet to generate"}
           </span>
           <button
             className="eyebrow hover:text-fg transition-colors shrink-0"
-            disabled={!found}
+            disabled={!ready}
           >
             copy
           </button>
@@ -142,7 +156,7 @@ export function ClaimFlow() {
             <button
               key={r}
               onClick={() => setRoute(r)}
-              disabled={!found}
+              disabled={!ready}
               className={clsx(
                 "eyebrow px-3.5 py-2 rounded-lg border-2 transition-colors",
                 route === r ? "border-accent text-accent" : "border-line hover:text-fg-soft",
@@ -160,10 +174,10 @@ export function ClaimFlow() {
         </p>
 
         {route === "caption" && (
-          <Input className="mt-4" placeholder="https://www.tiktok.com/@you/video/…" disabled={!found} />
+          <Input className="mt-4" placeholder="https://www.tiktok.com/@you/video/…" disabled={!ready} />
         )}
 
-        <Button variant="accent" className="mt-6 w-full sm:w-auto" disabled={!found}>
+        <Button variant="accent" className="mt-6 w-full sm:w-auto" disabled={!ready}>
           Verify and claim
         </Button>
       </Step>
