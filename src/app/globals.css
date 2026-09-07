@@ -1,18 +1,17 @@
 @import "tailwindcss";
 
 /*
- * DUO — a coin somebody opened in your name.
+ * DUETTO — two holders, one purse.
  *
  * Candy pop. Warm paper, ink keylines, chunky corners and hard offset
- * shadows: the loudness of a launchpad without the acid. Violet does all the
- * shouting and is spent on exactly one thing — money owed to a person who
- * has not arrived yet. Pink is its echo, used sparingly for the second voice.
- * On a board where every row is a coin, the accent has to mean "unclaimed"
- * or it means nothing.
+ * shadows: the loudness of an arcade cabinet without the acid. Violet does
+ * all the shouting and is spent on exactly one thing — the prize and the
+ * fighter about to take it. Red is reserved for damage. If the accent ever
+ * decorates something that is not at stake, it stops meaning anything.
  *
- * Token names are deliberately role-based (page / surface / fg / accent /
- * line) rather than descriptive. The art direction has already changed once;
- * the next swap should be this file and nothing else.
+ * Token names are role-based (page / surface / fg / accent / line) rather
+ * than descriptive, so a change of art direction is this file and nothing
+ * else.
  */
 :root {
   --page: #fdfbf4;
@@ -25,7 +24,6 @@
 
   --accent: #6b4eff;
   --accent-hi: #5133f2;
-  --accent-line: #6b4eff;
   --accent-2: #ff4d8d;
   --on-accent: #ffffff;
 
@@ -38,7 +36,6 @@
   --loss: #d93a45;
 
   --radius: 18px;
-  --radius-sm: 11px;
 }
 
 @theme inline {
@@ -50,7 +47,6 @@
   --color-fg-muted: var(--fg-muted);
   --color-accent: var(--accent);
   --color-accent-hi: var(--accent-hi);
-  --color-accent-line: var(--accent-line);
   --color-accent-2: var(--accent-2);
   --color-on-accent: var(--on-accent);
   --color-line: var(--line);
@@ -65,7 +61,6 @@
 
 html {
   background: var(--page);
-  scroll-behavior: smooth;
 }
 
 body {
@@ -123,10 +118,6 @@ body > * {
 
 /* --- Structure --------------------------------------------------------- */
 
-.rule-t {
-  border-top: 1px solid var(--line);
-}
-
 /* The chunky unit. Ink keyline plus a hard offset — no blur anywhere on the
    page, because a soft shadow would put this back in the app-template idiom
    the whole direction is trying to leave. */
@@ -137,15 +128,8 @@ body > * {
   box-shadow: 5px 5px 0 var(--line-strong);
 }
 
-.card-quiet {
-  background: transparent;
-  border: 2px solid var(--line-strong);
-  border-radius: var(--radius);
-}
-
-/* A coin still waiting for its person. The only place violet is allowed to
-   fill rather than outline. */
-.owed {
+/* The opponent currently squared up against you. */
+.picked {
   border-color: var(--accent);
   box-shadow: 5px 5px 0 var(--accent);
 }
@@ -154,6 +138,71 @@ body > * {
   outline: 2px solid var(--accent);
   outline-offset: 2px;
 }
+
+/* --- The fight --------------------------------------------------------- */
+
+/* A blow is three things at once: the attacker throws itself forward, the
+   target recoils, and the whole cabinet jolts. Any one of them alone reads
+   as a UI transition rather than a hit. */
+@keyframes lunge-right {
+  0% { transform: translateX(0) rotate(0deg); }
+  35% { transform: translateX(26px) rotate(6deg); }
+  100% { transform: translateX(0) rotate(0deg); }
+}
+
+@keyframes lunge-left {
+  0% { transform: scaleX(-1) translateX(0) rotate(0deg); }
+  35% { transform: scaleX(-1) translateX(26px) rotate(6deg); }
+  100% { transform: scaleX(-1) translateX(0) rotate(0deg); }
+}
+
+@keyframes took-hit {
+  0%, 100% { transform: translateX(0); }
+  20% { transform: translateX(-9px) rotate(-4deg); }
+  45% { transform: translateX(6px) rotate(3deg); }
+  70% { transform: translateX(-3px); }
+}
+
+/* The flipped fighter has to keep its mirror through the recoil. */
+@keyframes took-hit-flipped {
+  0%, 100% { transform: scaleX(-1) translateX(0); }
+  20% { transform: scaleX(-1) translateX(-9px) rotate(-4deg); }
+  45% { transform: scaleX(-1) translateX(6px) rotate(3deg); }
+  70% { transform: scaleX(-1) translateX(-3px); }
+}
+
+@keyframes blow-pop {
+  0% { transform: scale(0.5) translateY(6px); opacity: 0; }
+  40% { transform: scale(1.25) translateY(-4px); opacity: 1; }
+  100% { transform: scale(1) translateY(-14px); opacity: 0; }
+}
+
+@keyframes duel-shake {
+  0%, 100% { transform: translate(0, 0); }
+  25% { transform: translate(-3px, 2px); }
+  50% { transform: translate(3px, -2px); }
+  75% { transform: translate(-2px, -1px); }
+}
+
+/* The right-hand fighter faces left. Everything below composes on top of it,
+   which is why the mirror lives here rather than in an inline style. */
+.flipped { transform: scaleX(-1); }
+
+.lunge-right { animation: lunge-right 0.55s ease-out; }
+.lunge-left { animation: lunge-left 0.55s ease-out; }
+.took-hit { animation: took-hit 0.5s ease-out; }
+.flipped.took-hit { animation-name: took-hit-flipped; }
+.blow-pop { animation: blow-pop 0.75s ease-out forwards; display: inline-block; }
+.duel-shake { animation: duel-shake 0.28s ease-out; }
+
+/* Dropped fighters stay down. */
+.defeated {
+  transform: rotate(14deg) translateY(10px);
+  opacity: 0.4;
+  transition: transform 0.5s ease-out, opacity 0.5s ease-out;
+}
+
+.flipped.defeated { transform: scaleX(-1) rotate(14deg) translateY(10px); }
 
 @media (prefers-reduced-motion: reduce) {
   *,

@@ -2,10 +2,10 @@
   "version": "0.0.1",
   "configurations": [
     {
-      "name": "duo",
+      "name": "duetto",
       "runtimeExecutable": "npm",
-      "runtimeArgs": ["run", "dev", "--", "--port", "3210"],
-      "port": 3210
+      "runtimeArgs": ["run", "dev"],
+      "autoPort": true
     }
   ]
 }
